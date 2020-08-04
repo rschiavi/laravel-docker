@@ -5,16 +5,10 @@ services:
   app:
     build: .
     container_name: app
-    # entrypoint: .docker/entrypoint.sh
     volumes:
       - .:/var/www
     networks:
       - app-network
-    # environment:
-    #   - DB_HOST=db
-    #   - DB_DATABASE=laravel
-    #   - DB_USERNAME=root
-    #   - DB_PASSWORD=root
     depends_on:
       - db
       - redis
