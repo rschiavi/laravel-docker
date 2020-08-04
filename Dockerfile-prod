@@ -13,9 +13,6 @@ WORKDIR /var/www
 RUN rm -rf html
 RUN ln -s public html
 
-#RUN usermod -u 1000 www-data
-#USER www-data
-
 COPY . .
 
 RUN composer install --optimize-autoloader --no-dev \
