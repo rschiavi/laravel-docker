@@ -13,7 +13,7 @@ COPY . .
 
 RUN composer install --optimize-autoloader --no-dev \
     && php artisan cache:clear \
-    && chmod -R 775 storage/
+    && chmod -R 777 storage/
 
 EXPOSE 9000
 
