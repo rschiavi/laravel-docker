@@ -35,3 +35,22 @@ steps:
   - id: "Enviando imagem para o image registry"
     name: 'gcr.io/cloud-builders/docker:19.03.8'
     args: ['push', 'gcr.io/$PROJECT_ID/app-laravel:$SHORT_SHA']
+
+  - id: "Ajustando arquivo de deployment - k8s"
+    name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: '/bin/sh'
+    args:
+      - '-c'
+      - |
+        sed 's#img-app-deployment#gcr.io/$PROJECT_ID/app-laravel:$SHORT_SHA#g' k8s/app/deployment.yaml > k8s/app/deployment-new.yaml;
+        cat k8s/app/deployment-new.yaml;
+
+  - id: "Deploying k8s"
+    name: 'gcr.io/cloud-builders/kubectl'
+    args:
+      - 'apply'
+      - '-f'
+      - 'k8s/app/deployment-new.yaml'
+    env:
+    - 'CLOUDSDK_COMPUTE_ZONE=us-central1-c'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-docker-laravel'
